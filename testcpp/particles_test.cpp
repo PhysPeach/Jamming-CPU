@@ -3,7 +3,7 @@
 namespace PhysPeach{
     void createParticlesTest(){
 
-        PhysPeach::Particles p;
+        Particles p;
         createParticles(&p, 3);
 
         double diamav = 0.;
@@ -36,7 +36,7 @@ namespace PhysPeach{
         return;
     }
     void squeezePositionsTest(){
-        PhysPeach::Particles p;
+        Particles p;
         createParticles(&p, 3);
         for(int par1 = 0; par1 < D*Np; par1++){
             p.x[par1] = 1.;
@@ -47,6 +47,18 @@ namespace PhysPeach{
             assert(p.x[par1] == 1. * 0.99);
             assert(p.mem[par1] = 1. * 0.99);
         }
+        deleteParticles(&p);
+    }
+    void powerParticlesTest(){
+        Particles p;
+        createParticles(&p, 3);
+        for(int par1 = 0; par1 < D*Np; par1++){
+            p.v[par1] = 2.;
+            p.f[par1] = 3.;
+        }
+        double power = powerParticles(&p);
+        assert(power > 5.99 * D*Np);
+        assert(power < 6.1 * D*Np);
         deleteParticles(&p);
     }
 }

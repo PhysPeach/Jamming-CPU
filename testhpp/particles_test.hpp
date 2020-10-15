@@ -9,5 +9,6 @@
 namespace PhysPeach{
     void createParticlesTest();
     void squeezePositionsTest();
+    void powerParticlesTest();
 }
 #endif

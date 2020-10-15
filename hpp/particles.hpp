@@ -19,6 +19,7 @@ namespace PhysPeach{
         double *v;
         double *f;
     };
+    double powerParticles(Particles* p);
     void createParticles(Particles*, int);
     void createParticles(Particles*, std::ifstream*);
     void deleteParticles(Particles*);

@@ -1,6 +1,13 @@
 #include "../hpp/particles.hpp"
 
 namespace PhysPeach{
+    double powerParticles(Particles* p){
+        double power = 0.;
+        for(int par1 = 0; par1 < D*Np; par1++){
+            power += p->v[par1] * p->f[par1];
+        }
+        return power;
+    }
     void createParticles(Particles *p, int numOfCellsPerSide){
         p->packing = 0;
 
