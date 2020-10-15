@@ -107,4 +107,21 @@ namespace PhysPeach{
         }
         return;
     }
+
+    bool convergedFire(Particles *p){
+        double fsum = 0.;
+        double fmax = 1.0e-13;
+        double f2;
+        for(int par1 = 0; par1 < Np; par1++){
+            f2 = 0.;
+            for(int d = 0; d < D; d++){
+                f2 += p->f[par1+d*Np] * p->f[par1+d*Np];
+            }
+            fsum += sqrt(f2);
+        }
+        if(fsum > fmax * Np){
+            return false;
+        }
+        return true;
+    }
 }

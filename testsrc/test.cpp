@@ -24,6 +24,7 @@ int main(){
     PhysPeach::createParticlesTest();
     PhysPeach::squeezePositionsTest();
     PhysPeach::powerParticlesTest();
+    PhysPeach::convergedFireTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;

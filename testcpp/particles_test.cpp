@@ -35,6 +35,7 @@ namespace PhysPeach{
         deleteParticles(&p);
         return;
     }
+
     void squeezePositionsTest(){
         Particles p;
         createParticles(&p, 3);
@@ -45,10 +46,13 @@ namespace PhysPeach{
         squeezePositions(&p, 0.99);
         for(int par1 = 0; par1 < D*Np; par1++){
             assert(p.x[par1] == 1. * 0.99);
-            assert(p.mem[par1] = 1. * 0.99);
+            assert(p.mem[par1] == 1. * 0.99);
         }
         deleteParticles(&p);
+
+        return;
     }
+
     void powerParticlesTest(){
         Particles p;
         double power;
@@ -69,9 +73,33 @@ namespace PhysPeach{
         power = powerParticles(&p);
         assert(power > (double)(D*Np * (D*Np - 1)/2) - 0.1);
         assert(power < (double)(D*Np * (D*Np - 1)/2) + 0.1);
-        
+
         deleteParticles(&p);
         
+        return;
+    }
+
+    void convergedFireTest(){
+        Particles p;
+        createParticles(&p, 3);
+        bool converged;
+        converged = convergedFire(&p);
+        assert(converged);
+
+        p.f[0] = 1.0e-12 * D*Np;
+        converged = convergedFire(&p);
+        assert(!converged);
+
+        p.f[0] = 1.0e-14 * D*Np;
+        converged = convergedFire(&p);
+        assert(converged);
+
+        p.f[D*Np - 1] = 1.0e-13 * D*Np;
+        converged = convergedFire(&p);
+        assert(!converged);
+
+        deleteParticles(&p);
+
         return;
     }
 }

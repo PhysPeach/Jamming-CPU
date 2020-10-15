@@ -24,6 +24,7 @@ namespace PhysPeach{
     void createParticles(Particles*, std::ifstream*);
     void deleteParticles(Particles*);
     void squeezePositions(Particles*, double);
+    bool convergedFire(Particles*);
 }
 
 #endif
