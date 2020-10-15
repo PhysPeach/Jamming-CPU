@@ -51,14 +51,27 @@ namespace PhysPeach{
     }
     void powerParticlesTest(){
         Particles p;
+        double power;
+
         createParticles(&p, 3);
         for(int par1 = 0; par1 < D*Np; par1++){
             p.v[par1] = 2.;
             p.f[par1] = 3.;
         }
-        double power = powerParticles(&p);
+        power = powerParticles(&p);
         assert(power > 5.99 * D*Np);
-        assert(power < 6.1 * D*Np);
+        assert(power < 6.01 * D*Np);
+
+        for(int par1 = 0; par1 < D*Np; par1++){
+            p.v[par1] = par1;
+            p.f[par1] = 1.;
+        }
+        power = powerParticles(&p);
+        assert(power > (double)(D*Np * (D*Np - 1)/2) - 0.1);
+        assert(power < (double)(D*Np * (D*Np - 1)/2) + 0.1);
+        
         deleteParticles(&p);
+        
+        return;
     }
 }
