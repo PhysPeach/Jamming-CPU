@@ -92,4 +92,12 @@ namespace PhysPeach{
         free(p->f);
         return;
     }
+
+    void squeezePositions(Particles *p, double a){
+            for(int par1 = 0; par1 < D * Np; par1++){
+            p->x[par1] *= a;
+            p->mem[par1] *= a;
+        }
+        return;
+    }
 }

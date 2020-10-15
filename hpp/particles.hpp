@@ -22,6 +22,7 @@ namespace PhysPeach{
     void createParticles(Particles*, int);
     void createParticles(Particles*, std::ifstream*);
     void deleteParticles(Particles*);
+    void squeezePositions(Particles*, double);
 }
 
 #endif

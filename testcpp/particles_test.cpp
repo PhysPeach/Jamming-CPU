@@ -28,7 +28,25 @@ namespace PhysPeach{
             assert(xav[d] > -0.01);
             assert(xav[d] < 0.01);
         }
+
+        for(int par1 = 0; par1 < D*Np; par1++){
+            assert(p.x[par1] == p.mem[par1]);
+        }
         deleteParticles(&p);
         return;
+    }
+    void squeezePositionsTest(){
+        PhysPeach::Particles p;
+        createParticles(&p, 3);
+        for(int par1 = 0; par1 < D*Np; par1++){
+            p.x[par1] = 1.;
+            p.mem[par1] = 1.;
+        }
+        squeezePositions(&p, 0.99);
+        for(int par1 = 0; par1 < D*Np; par1++){
+            assert(p.x[par1] == 1. * 0.99);
+            assert(p.mem[par1] = 1. * 0.99);
+        }
+        deleteParticles(&p);
     }
 }
