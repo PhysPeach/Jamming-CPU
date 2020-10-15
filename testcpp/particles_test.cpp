@@ -104,4 +104,34 @@ namespace PhysPeach{
 
         return;
     }
+
+    void updateMemTest(){
+        Particles p;
+        bool updated;
+
+        createParticles(&p, 3);
+        double L = pow(p.packing/Phi_init, 1./(double)D);
+
+        updated = updateMem(&p, L);
+        assert(!updated);
+
+        p.x[0] += 0.3 * a_max;
+        updated = updateMem(&p, L);
+        assert(!updated);
+        assert(p.x[0] != p.mem[0]);
+
+        p.x[1] += 0.3 * a_max;
+        updated = updateMem(&p, L);
+        assert(!updated);
+        assert(p.x[1] != p.mem[1]);
+
+        p.x[0] += 0.21 * a_max;
+        updated = updateMem(&p, L);
+        assert(updated);
+        assert(p.x[0] == p.mem[0]);
+        assert(p.x[1] == p.mem[1]);
+
+        deleteParticles(&p);
+        return;
+    }
 }

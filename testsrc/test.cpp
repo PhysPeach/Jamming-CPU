@@ -25,6 +25,7 @@ int main(){
     PhysPeach::squeezePositionsTest();
     PhysPeach::powerParticlesTest();
     PhysPeach::convergedFireTest();
+    PhysPeach::updateMemTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;

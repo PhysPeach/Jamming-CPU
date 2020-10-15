@@ -11,5 +11,6 @@ namespace PhysPeach{
     void squeezePositionsTest();
     void powerParticlesTest();
     void convergedFireTest();
+    void updateMemTest();
 }
 #endif

@@ -100,6 +100,31 @@ namespace PhysPeach{
         return;
     }
 
+    bool updateMem(Particles* p, double L){
+        double Lh = 0.5 * L;
+        double dx[D];
+        double frag = 0.25 * a_max * a_max;
+        //fix mem_x by gamma
+        /*for(int par1 = 0; par1 < Np; par1++){
+            p->mem[par1] += (p->gamma - p->gammaMem) * L;
+        }
+        p->gammaMem = p->gamma;*/
+        for(int par1 = 0 ; par1 < Np; par1++){
+            for(int d = 0; d < D; d++){
+                dx[d] = p->x[d*Np+par1] - p->mem[d*Np+par1];
+            }
+            for(int d = D-1; d >= 0; d--){
+                if(dx[d] > Lh){dx[d] -= L;}
+                if(dx[d] < -Lh){dx[d] += L;}
+                if(dx[d] > frag){
+                    memcpy(p->mem, p->x, D * Np * sizeof(double));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     void squeezePositions(Particles *p, double a){
             for(int par1 = 0; par1 < D * Np; par1++){
             p->x[par1] *= a;
