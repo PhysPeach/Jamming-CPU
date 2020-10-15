@@ -81,8 +81,10 @@ namespace PhysPeach{
 
     void convergedFireTest(){
         Particles p;
-        createParticles(&p, 3);
         bool converged;
+
+        createParticles(&p, 3);
+
         converged = convergedFire(&p);
         assert(converged);
 
