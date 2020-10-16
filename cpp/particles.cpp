@@ -133,6 +133,31 @@ namespace PhysPeach{
         return;
     }
 
+    void modifyVelocities(Particles* p, double a){
+        double v, f;
+        for(int par1 = 0; par1 < Np; par1++){
+            v = 0.;
+            f = 0.;
+            for(int d = 0; d < D; d++){
+                v += p->v[d*Np+par1] * p->v[d*Np+par1];
+                f += p->f[d*Np+par1] * p->f[d*Np+par1];
+            }
+            if(f > 0.){
+                v = sqrt(v);
+                f = sqrt(f);
+                for(int d = 0; d < D; d++){
+                    p->v[d*Np+par1] = (1-a) * p->v[d*Np+par1] + a * v * p->f[d*Np+par1] / f;
+                }
+            }else{
+                v = sqrt(v);
+                for(int d = 0; d < D; d++){
+                    p->v[d*Np+par1] = (1-a) * p->v[d*Np+par1];
+                }
+            }
+        }
+        return;
+    }
+
     bool convergedFire(Particles *p){
         double fsum = 0.;
         double fmax = 1.0e-13;

@@ -25,6 +25,7 @@ namespace PhysPeach{
     void deleteParticles(Particles*);
     bool updateMem(Particles*, double);
     void squeezePositions(Particles*, double);
+    void modifyVelocities(Particles*, double);
     bool convergedFire(Particles*);
 }
 

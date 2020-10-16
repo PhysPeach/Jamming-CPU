@@ -19,14 +19,12 @@ namespace PhysPeach{
         }
 
         diamav /= Np;
-        assert(diamav > 0.99);
-        assert(diamav < 1.01);
+        assert(0.99 < diamav && diamav < 1.01);
 
         double L = pow(p.packing/Phi_init, 1./(double)D);
         for(int d = 0; d < D; d++){
             xav[d] /= Np * L;
-            assert(xav[d] > -0.01);
-            assert(xav[d] < 0.01);
+            assert(-0.01 < xav[d] && xav[d] < 0.01);
         }
 
         for(int par1 = 0; par1 < D*Np; par1++){
@@ -63,16 +61,14 @@ namespace PhysPeach{
             p.f[par1] = 3.;
         }
         power = powerParticles(&p);
-        assert(power > 5.99 * D*Np);
-        assert(power < 6.01 * D*Np);
+        assert(5.99 * D*Np < power && power < 6.01 * D*Np);
 
         for(int par1 = 0; par1 < D*Np; par1++){
             p.v[par1] = par1;
             p.f[par1] = 1.;
         }
         power = powerParticles(&p);
-        assert(power > (double)(D*Np * (D*Np - 1)/2) - 0.1);
-        assert(power < (double)(D*Np * (D*Np - 1)/2) + 0.1);
+        assert((double)(D*Np * (D*Np - 1)/2) - 0.1 < power && power < (double)(D*Np * (D*Np - 1)/2) + 0.1);
 
         deleteParticles(&p);
         
@@ -130,6 +126,31 @@ namespace PhysPeach{
         assert(updated);
         assert(p.x[0] == p.mem[0]);
         assert(p.x[1] == p.mem[1]);
+
+        deleteParticles(&p);
+        return;
+    }
+
+    void modifyVelocitiesTest(){
+        Particles p;
+
+        createParticles(&p, 3);
+
+        p.v[0] = 1.;
+        p.f[Np] = 1.;
+        modifyVelocities(&p, 0.2);
+        assert(0.79 < p.v[0] && p.v[0] < 0.81);
+        assert(0.19 < p.v[Np] && p.v[Np] < 0.21);
+
+        p.v[1] = 0.;
+        p.v[Np+1] = 2.;
+        p.f[1] = 1.;
+        p.f[Np+1] = 0.;
+        modifyVelocities(&p, 0.3);
+        assert(0.55 < p.v[0] && p.v[0] < 0.57);
+        assert(0.37 < p.v[Np] && p.v[Np] < 0.39);
+        assert(0.59 < p.v[1] && p.v[1] < 0.61);
+        assert(1.39 < p.v[Np+1] && p.v[Np+1] < 1.41);
 
         deleteParticles(&p);
         return;
