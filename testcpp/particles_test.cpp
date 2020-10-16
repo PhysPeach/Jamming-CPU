@@ -144,7 +144,7 @@ namespace PhysPeach{
 
         p.v[1] = 0.;
         p.v[Np+1] = 2.;
-        p.f[1] = 1.;
+        p.f[1] = 1.3;
         p.f[Np+1] = 0.;
         modifyVelocities(&p, 0.3);
         assert(0.55 < p.v[0] && p.v[0] < 0.57);
