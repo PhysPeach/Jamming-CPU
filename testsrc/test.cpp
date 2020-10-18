@@ -3,6 +3,7 @@
 
 #include "../testhpp/conf_test.hpp"
 #include "../testhpp/particles_test.hpp"
+#include "../testhpp/cells_test.hpp"
 
 int ID;
 int Np;
@@ -27,6 +28,9 @@ int main(){
     PhysPeach::convergedFireTest();
     PhysPeach::updateMemTest();
     PhysPeach::modifyVelocitiesTest();
+
+    //cells_test
+    PhysPeach::createCellsTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;

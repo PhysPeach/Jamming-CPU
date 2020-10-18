@@ -25,5 +25,6 @@ namespace PhysPeach{
         }
         return;
     }
+    template void setZero<int>(int*, int);
     template void setZero<double>(double*, int);
 }
