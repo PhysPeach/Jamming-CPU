@@ -31,6 +31,7 @@ int main(){
 
     //cells_test
     PhysPeach::createCellsTest();
+    PhysPeach::increaseNcTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;

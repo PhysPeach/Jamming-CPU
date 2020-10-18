@@ -19,4 +19,13 @@ namespace PhysPeach{
         free(cells->cell);
         return;
     }
+    
+    void increaseNc(Cells *cells){
+        cells->Nc++;
+        int NoC = powInt(cells->Nc, D)*cells->Nc;
+        free(cells->cell);
+        cells->cell = (int*)malloc(NoC*sizeof(int));
+        setZero(cells->cell, NoC);
+        return;
+    }
 }

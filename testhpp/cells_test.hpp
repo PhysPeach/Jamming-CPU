@@ -8,5 +8,6 @@
 
 namespace PhysPeach{
     void createCellsTest();
+    void increaseNcTest();
 }
 #endif
