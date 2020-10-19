@@ -10,7 +10,7 @@ namespace PhysPeach{
         double buf = 1.5;
         cells->Nc = (int)(buf * (double)Np/ (double)powInt(cells->numOfCellsPerSide, D));
 
-        int NoC = powInt(cells->Nc, D)*cells->Nc;
+        int NoC = powInt(cells->numOfCellsPerSide, D)*cells->Nc;
         cells->cell = (int*)malloc(NoC*sizeof(int));
         setZero(cells->cell, NoC);
         return;
@@ -23,7 +23,7 @@ namespace PhysPeach{
     
     void increaseNc(Cells *cells){
         cells->Nc++;
-        int NoC = powInt(cells->Nc, D)*cells->Nc;
+        int NoC = powInt(cells->numOfCellsPerSide, D)*cells->Nc;
         free(cells->cell);
         cells->cell = (int*)malloc(NoC*sizeof(int));
         setZero(cells->cell, NoC);
