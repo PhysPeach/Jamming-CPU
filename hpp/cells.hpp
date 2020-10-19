@@ -15,5 +15,14 @@ namespace PhysPeach{
     void deleteCells(Cells*);
     void increaseNc(Cells*);
     void updateCells(Cells*, double, double*);
+
+    struct Lists{
+        int *list;
+        int Nl;
+    };
+    void createLists(Lists*, Cells*);
+    void deleteLists(Lists*);
+    void increaseNl(Lists*);
+    void updateLists(Lists*, Cells*, double, double*);
 }
 #endif

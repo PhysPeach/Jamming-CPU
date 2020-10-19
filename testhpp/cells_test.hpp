@@ -7,8 +7,15 @@
 #include "../hpp/cells.hpp"
 
 namespace PhysPeach{
+    //cellsTest
     void createCellsTest();
     void increaseNcTest();
     void updateCellsTest();
+
+    //listsTest
+    void createListsTest();
+    void increaseNlTest();
+    void updateListsTest();
+
 }
 #endif
