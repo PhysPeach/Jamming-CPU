@@ -32,6 +32,7 @@ int main(){
     //cells_test
     PhysPeach::createCellsTest();
     PhysPeach::increaseNcTest();
+    //PhysPeach::updateCellsTest(); memory warning do it in small Np
 
     std::cout << "---finished---" << std::endl;
     return 0;
