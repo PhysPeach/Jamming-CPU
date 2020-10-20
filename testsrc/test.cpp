@@ -9,11 +9,13 @@
 int ID;
 int Np;
 double Phi_init;
+double Dphi;
 
 int main(){
     ID = 0;
     Np = 1024;
     Phi_init = 0.8;
+    Dphi = 0.05;
 
     std::cout << "--start test--" << std::endl;
     init_genrand(1);

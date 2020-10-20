@@ -9,6 +9,7 @@ const int D = 2;
 extern int ID;
 extern int Np;
 extern double Phi_init;
+extern double Dphi;
 const double a0 = 1.;
 const double a_min = 0.7253;
 const double a_max = 1.6095;

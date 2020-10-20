@@ -106,4 +106,51 @@ namespace PhysPeach{
         std::cout << "-> Jamming Point: " << jam->phi << std::endl;
         return;
     }
+
+    void squeezeJamming(Jamming *jam){
+        double jammingPoint = jam->phi;
+        double dphi;
+
+        std::cout << "Squeeze from phi = " << jam->phi << std::endl;
+        std::ostringstream fileName;
+        fileName << "../squeeze/sq_N" << Np << "_Phi" << Phi_init << "_Dphi" << Dphi << "_id" << ID <<".data";
+        std::ofstream file;
+        file.open(fileName.str().c_str());
+        file << jammingPoint << std::endl << std::endl;
+
+        double delta = 0.;
+        dphi = 1.0e-6;
+        for (int i = 0; i < 10; i++){
+            if(delta > Dphi){
+                break;
+            }
+            addDphi(jam, dphi);
+            delta = jam->phi - jammingPoint;
+            file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
+        }
+        dphi = 1.0e-5;
+        for (int i = 1; i < 10; i++){
+            if(delta > Dphi){
+                break;
+            }
+            addDphi(jam, dphi);
+            delta = jam->phi - jammingPoint;
+            file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
+        }
+        dphi = 1.0e-4;
+        double OutputAt = jam->phi - jammingPoint;
+        while(delta <= Dphi){
+            addDphi(jam, dphi);
+            delta = jam->phi - jammingPoint;
+            if(delta >= OutputAt){
+                file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
+                OutputAt = 1.1 * delta;
+            }
+        }
+        file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
+        file.close();
+        std::cout << "finished!: phi = " << jam->phi << std::endl;
+
+        return;
+    }
 }
