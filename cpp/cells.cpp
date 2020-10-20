@@ -7,7 +7,7 @@ namespace PhysPeach{
         if(cells->numOfCellsPerSide < 3){
             cells->numOfCellsPerSide = 3;
         }
-        double buf = 1.5;
+        double buf = 3.;
         cells->Nc = (int)(buf * (double)Np/ (double)powInt(cells->numOfCellsPerSide, D));
 
         int NoC = powInt(cells->numOfCellsPerSide, D)*cells->Nc;
@@ -22,10 +22,9 @@ namespace PhysPeach{
     }
     
     void increaseNc(Cells *cells){
-        cells->Nc++;
+        cells->Nc = (int)(1.4 * cells->Nc);
         int NoC = powInt(cells->numOfCellsPerSide, D)*cells->Nc;
-        free(cells->cell);
-        cells->cell = (int*)malloc(NoC*sizeof(int));
+        cells->cell = (int*)realloc(cells->cell, NoC*sizeof(int));
         setZero(cells->cell, NoC);
         return;
     }
@@ -83,10 +82,9 @@ namespace PhysPeach{
     }
     
     void increaseNl(Lists *lists){
-        lists->Nl++;
+        lists->Nl = (int)(1.4 * lists->Nl);
         int NoL = lists->Nl * Np;
-        free(lists->list);
-        lists->list = (int*)malloc(NoL*sizeof(int));
+        lists->list = (int*)realloc(lists->list, NoL*sizeof(int));
         setZero(lists->list, NoL);
         return;
     }

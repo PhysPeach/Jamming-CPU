@@ -8,7 +8,7 @@ namespace PhysPeach{
         }
         return power;
     }
-    
+
     void createParticles(Particles *p){
         p->packing = 0;
 
