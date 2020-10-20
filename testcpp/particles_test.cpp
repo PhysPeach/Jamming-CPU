@@ -4,7 +4,7 @@ namespace PhysPeach{
     void createParticlesTest(){
 
         Particles p;
-        createParticles(&p, 3);
+        createParticles(&p);
 
         double diamav = 0.;
         double xav[D];
@@ -36,7 +36,7 @@ namespace PhysPeach{
 
     void squeezePositionsTest(){
         Particles p;
-        createParticles(&p, 3);
+        createParticles(&p);
         for(int par1 = 0; par1 < D*Np; par1++){
             p.x[par1] = 1.;
             p.mem[par1] = 1.;
@@ -55,7 +55,7 @@ namespace PhysPeach{
         Particles p;
         double power;
 
-        createParticles(&p, 3);
+        createParticles(&p);
         for(int par1 = 0; par1 < D*Np; par1++){
             p.v[par1] = 2.;
             p.f[par1] = 3.;
@@ -79,7 +79,7 @@ namespace PhysPeach{
         Particles p;
         bool converged;
 
-        createParticles(&p, 3);
+        createParticles(&p);
 
         converged = convergedFire(&p);
         assert(converged);
@@ -105,7 +105,7 @@ namespace PhysPeach{
         Particles p;
         bool updated;
 
-        createParticles(&p, 3);
+        createParticles(&p);
         double L = pow(p.packing/Phi_init, 1./(double)D);
 
         updated = updateMem(&p, L);
@@ -134,7 +134,7 @@ namespace PhysPeach{
     void modifyVelocitiesTest(){
         Particles p;
 
-        createParticles(&p, 3);
+        createParticles(&p);
 
         p.v[0] = 1.;
         p.f[Np] = 1.;

@@ -8,7 +8,8 @@ namespace PhysPeach{
         }
         return power;
     }
-    void createParticles(Particles *p, int numOfCellsPerSide){
+    
+    void createParticles(Particles *p){
         p->packing = 0;
 
         p->diam = (double*)malloc(Np * sizeof(double));
@@ -23,26 +24,21 @@ namespace PhysPeach{
         }
         p->packing *= 0.5 * pi / D;
 
-        int numOfCells = powInt(numOfCellsPerSide, D);
-        int NpC = Np / numOfCells;
         double L = pow(p->packing/Phi_init, 1./(double)D);
-        double Lc = L / (double)numOfCellsPerSide;
+        int uniformity = (int)(pow(Np, 1./(double)D));
+        double Lu = L / (double)uniformity;
 
-        for(int i1 = 0; i1 < numOfCellsPerSide; i1++){
-            for(int i2 = 0; i2 < numOfCellsPerSide; i2++){
+        for(int i1 = 0; i1 < uniformity; i1++){
+            for(int i2 = 0; i2 < uniformity; i2++){
                 if(D == 2){
-                    for(int m = 0; m < NpC; m++){
-                        p->x[(i1*numOfCellsPerSide+i2)*NpC+m] = (i1 + genrand_real1()) * Lc - 0.5 * L;
-                        p->x[(i1*numOfCellsPerSide+i2)*NpC+m+Np] = (i2 + genrand_real1()) * Lc - 0.5 * L;
-                    }
+                    p->x[i1*uniformity+i2] = (i1 + genrand_real1()) * Lu - 0.5 * L;
+                    p->x[Np+i1*uniformity+i2] = (i2 + genrand_real1()) * Lu - 0.5 * L;
                 }
                 else if(D == 3){
-                    for(int k = 0; k < numOfCellsPerSide; k++){
-                        for(int m = 0; m < NpC; m++){
-                            p->x[((i1*numOfCellsPerSide+i2)*numOfCellsPerSide + k)*NpC+m] = (i1 + genrand_real1()) * Lc - 0.5 * L;
-                            p->x[((i1*numOfCellsPerSide+i2)*numOfCellsPerSide + k)*NpC+m+Np] = (i2 + genrand_real1()) * Lc - 0.5 * L;
-                            p->x[((i1*numOfCellsPerSide+i2)*numOfCellsPerSide + k)*NpC+m+Np] = (k + genrand_real1()) * Lc - 0.5 * L;
-                        }
+                    for(int i3 = 0; i3 < uniformity; i3++){
+                        p->x[(i1*uniformity+i2)*uniformity+i3] = (i1 + genrand_real1()) * Lu - 0.5 * L;
+                        p->x[Np+(i1*uniformity+i2)*uniformity+i3] = (i2 + genrand_real1()) * Lu - 0.5 * L;
+                        p->x[2*Np+(i1*uniformity+i2)*uniformity+i3] = (i3 + genrand_real1()) * Lu - 0.5 * L;
                     }
                 }
                 else{
@@ -51,11 +47,11 @@ namespace PhysPeach{
                 }
             }
         }
-        for(int m = NpC*powInt(numOfCellsPerSide, D); m < Np; m++){
+        for(int m = powInt(uniformity, D); m < Np; m++){
             p->x[m] = (genrand_real1() - 0.5 )* L;
-            p->x[m+Np] = (genrand_real1() - 0.5) * L;
+            p->x[Np+m] = (genrand_real1() - 0.5) * L;
             if(D == 3){
-                p->x[m+2*Np] = (genrand_real1() - 0.5) * L;
+                p->x[2*Np+m] = (genrand_real1() - 0.5) * L;
             }
         }
         memcpy(p->mem, p->x, D * Np * sizeof(double));

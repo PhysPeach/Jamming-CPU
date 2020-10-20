@@ -20,7 +20,7 @@ namespace PhysPeach{
         double *f;
     };
     double powerParticles(Particles* p);
-    void createParticles(Particles*, int);
+    void createParticles(Particles*);
     void createParticles(Particles*, std::ifstream*);
     void deleteParticles(Particles*);
     bool updateMem(Particles*, double);
