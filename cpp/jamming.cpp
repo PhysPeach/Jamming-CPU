@@ -4,6 +4,7 @@ namespace PhysPeach{
     double L(Jamming* jam){
         return pow(jam->p.packing/jam->phi, 1./(double)D);
     }
+
     void createJamming(Jamming* jam){
         jam->t = 0.;
         jam->phi = Phi_init;
@@ -13,6 +14,23 @@ namespace PhysPeach{
         updateCellList(&jam->cells, &jam->lists, L(jam), jam->p.x);
         return;
     }
+
+    void loadJamming(Jamming* jam){
+        jam->t = 0.;
+        jam->phi = Phi_init;
+        
+        std::ostringstream inFileName;
+        inFileName << "../../swapmc/pos/";
+        inFileName << "pos_N" << Np << "_Phi" << Phi_init << "_id" << ID << ".data";
+        std::ifstream inFile;
+        inFile.open(inFileName.str().c_str());
+        createParticles(&jam->p, &inFile);
+        createCells(&jam->cells, L(jam));
+        createLists(&jam->lists, &jam->cells);
+        updateCellList(&jam->cells, &jam->lists, L(jam), jam->p.x);
+        return;
+    }
+
     void deleteJamming(Jamming* jam){
         deleteParticles(&jam->p);
         deleteLists(&jam->lists);
