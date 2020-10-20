@@ -4,6 +4,7 @@
 #include "../testhpp/conf_test.hpp"
 #include "../testhpp/particles_test.hpp"
 #include "../testhpp/cells_test.hpp"
+#include "../testhpp/jamming_test.hpp"
 
 int ID;
 int Np;
@@ -40,6 +41,9 @@ int main(){
     PhysPeach::createListsTest();
     PhysPeach::increaseNlTest();
     PhysPeach::updateListsTest(); //memory warning: do it in small Np
+
+    //jamming_test
+    PhysPeach::createJammingTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;

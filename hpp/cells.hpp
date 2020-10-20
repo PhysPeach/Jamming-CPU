@@ -24,5 +24,6 @@ namespace PhysPeach{
     void deleteLists(Lists*);
     void increaseNl(Lists*);
     void updateLists(Lists*, Cells*, double, double*);
+    void updateCellList(Cells*, Lists*, double, double*);
 }
 #endif

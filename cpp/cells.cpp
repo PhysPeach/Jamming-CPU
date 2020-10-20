@@ -164,4 +164,11 @@ namespace PhysPeach{
 
         return;
     }
+
+    void updateCellList(Cells *cells, Lists *lists, double L, double* x){
+        updateCells(cells, L, x);
+        updateLists(lists, cells, L, x);
+
+        return;
+    }
 }
