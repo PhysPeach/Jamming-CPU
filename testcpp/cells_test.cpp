@@ -55,13 +55,13 @@ namespace PhysPeach{
         Lists lists;
         createCells(&cells, 3.);
         createLists(&lists, &cells);
-        assert(lists.Nl == (int)(0.4 * (int)(1.5 * (double)Np/ (double)powInt(3, D))));
+        assert(lists.Nl == (int)(3.2 * (int)(1.5 * (double)Np/ (double)powInt(3, D))));
         deleteLists(&lists);
         deleteCells(&cells);
 
         createCells(&cells, 40.);
         createLists(&lists, &cells);
-        assert(lists.Nl == (int)(0.4 * (int)(1.5 * (double)Np/ (double)powInt(12, D))));
+        assert(lists.Nl == (int)(3.2 * (int)(1.5 * (double)Np/ (double)powInt(12, D))));
         deleteLists(&lists);
         deleteCells(&cells);
 
@@ -75,9 +75,9 @@ namespace PhysPeach{
         createCells(&cells, 40.);
         createLists(&lists, &cells);
 
-        assert(lists.Nl == (int)(0.4 * (int)(1.5 * (double)Np/ (double)powInt(12, D))));
+        assert(lists.Nl == (int)(3.2 * (int)(1.5 * (double)Np/ (double)powInt(12, D))));
         increaseNl(&lists);
-        assert(lists.Nl == 1 + (int)(0.4 * (int)(1.5 * (double)Np/ (double)powInt(12, D))));
+        assert(lists.Nl == 1 + (int)(3.2 * (int)(1.5 * (double)Np/ (double)powInt(12, D))));
 
         deleteLists(&lists);
         deleteCells(&cells);

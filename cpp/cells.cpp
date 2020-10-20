@@ -69,7 +69,7 @@ namespace PhysPeach{
 
     //lists
     void createLists(Lists *lists, Cells *cells){
-        lists->Nl = (int)(0.4 * (double)cells->Nc);
+        lists->Nl = (int)(3.2 * (double)cells->Nc);
 
         int NoL = lists->Nl * Np;
         lists->list = (int*)malloc(NoL*sizeof(int));
