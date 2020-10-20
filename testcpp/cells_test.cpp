@@ -134,15 +134,7 @@ namespace PhysPeach{
         createLists(&lists, &cells);
         updateCells(&cells, L, p.x);
         updateLists(&lists, &cells, L, p.x);
-        int NoL = lists.Nl * Np;
-        for(int n = 0; n < Np; n++){
-            std::cout << n << " " << p.x[n] << " " << p.x[Np+n] << std::endl;
-        }
-        for(int n = 0; n < 20; n++){
-            for(int l = 0; l < lists.Nl; l++){
-                std::cout << n << " " << l << " " << lists.list[n*lists.Nl+l] << std::endl;
-            }
-        }
+        deleteLists(&lists);
         deleteCells(&cells);
         deleteParticles(&p);
 

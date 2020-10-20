@@ -33,7 +33,7 @@ namespace PhysPeach{
         int c1, c2, c3;
         double Lc = L/(double)cells->numOfCellsPerSide;
         double Lh = 0.5 * L;
-        int NoC = powInt(cells->Nc, D)*cells->Nc;
+        int NoC = powInt(cells->numOfCellsPerSide, D)*cells->Nc;
         setZero(cells->cell, NoC);
         for(int par1 = 0; par1 < Np; par1++){
             c1 = (x[par1] + Lh)/Lc;
@@ -60,6 +60,7 @@ namespace PhysPeach{
         bool success = false;
         success = putParticlesIntoCells(cells, L, x);
         while (!success){
+            std::cout << "hello" << std::endl;
             increaseNc(cells);
             success = putParticlesIntoCells(cells, L, x);
         }
@@ -156,6 +157,7 @@ namespace PhysPeach{
         bool success = false;
         success = putParticlesIntoLists(lists, cells, L, x);
         while (!success){
+            std::cout << "hi" << std::endl;
             increaseNl(lists);
             success = putParticlesIntoLists(lists, cells, L, x);
         }

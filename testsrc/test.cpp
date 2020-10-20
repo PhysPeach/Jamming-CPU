@@ -12,7 +12,7 @@ double Phi_init;
 int main(){
     ID = 0;
     Np = 1024;
-    Phi_init = 0.3;
+    Phi_init = 0.8;
 
     std::cout << "--start test--" << std::endl;
     init_genrand(1);
@@ -37,7 +37,7 @@ int main(){
     //lists_test
     PhysPeach::createListsTest();
     PhysPeach::increaseNlTest();
-    //PhysPeach::updateListsTest(); //memory warning: do it in small Np
+    PhysPeach::updateListsTest(); //memory warning: do it in small Np
 
     std::cout << "---finished---" << std::endl;
     return 0;
