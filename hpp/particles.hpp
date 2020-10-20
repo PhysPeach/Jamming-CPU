@@ -10,6 +10,8 @@
 #include "../hpp/MT.hpp"
 #include "../hpp/conf.hpp"
 
+#include "../hpp/cells.hpp"
+
 namespace PhysPeach{
     struct Particles{
         double *diam;
@@ -19,6 +21,7 @@ namespace PhysPeach{
         double *v;
         double *f;
     };
+    void updateForces(Particles*, double, Lists*);
     double powerParticles(Particles* p);
     void createParticles(Particles*);
     void createParticles(Particles*, std::ifstream*);

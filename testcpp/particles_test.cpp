@@ -155,4 +155,25 @@ namespace PhysPeach{
         deleteParticles(&p);
         return;
     }
+
+    void updateForcesTest(){
+        Particles p;
+        Cells cells;
+        Lists lists;
+
+        createParticles(&p);
+        double L = pow(p.packing/Phi_init, 1./(double)D);
+        createCells(&cells, L);
+        createLists(&lists, &cells);
+        updateCells(&cells, L, p.x);
+        updateLists(&lists, &cells, L, p.x);
+
+        updateForces(&p, L, &lists);
+
+        deleteLists(&lists);
+        deleteCells(&cells);
+        deleteParticles(&p);
+
+        return;
+    }
 }

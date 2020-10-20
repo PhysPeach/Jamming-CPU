@@ -1,6 +1,47 @@
 #include "../hpp/particles.hpp"
 
 namespace PhysPeach{
+    void updateForces(Particles *p, double L, Lists* lists){
+        double diam1, x1[D], f1[D];
+        int par2;
+        double xij[D], rij, rij2, diamij, f_rij;
+        int cell1, cell2, cell3;
+        int list;
+        double Lh = 0.5 * L;
+
+        setZero(p->f, D*Np);
+        for(int par1 = 0; par1 < Np; par1++){
+            diam1 = p->diam[par1];
+            for(int d = 0; d < D; d++){
+                x1[d] = p->x[d*Np + par1];
+                f1[d] = 0.;
+            }
+            for(int k = 1; k<= lists->list[par1*lists->Nl]; k++){
+                par2 = lists->list[par1*lists->Nl + k];
+                diamij = 0.5 * (diam1 + p->diam[par2]);
+                rij2 = 0.;
+                for(int d = 0; d < D; d++){
+                    xij[d] = x1[d] - p->x[d*Np + par2];
+                    if (xij[d] > Lh){xij[d] -= L;}
+                    if (xij[d] < -Lh){xij[d] += L;}
+                    rij2 += xij[d] * xij[d];
+                }
+                if(0 < rij2 && rij2 < diamij * diamij){
+                    rij = sqrt(rij2);
+                    f_rij = 1/(rij * diamij) - 1/(diamij * diamij);
+                    for(int d = 0; d < D; d++){
+                        f1[d] -= f_rij * xij[d];
+                        p->f[par2+d*Np] += f_rij * xij[d];
+                    }
+                }
+            }
+            for(int d = 0; d < D; d++){
+                p->f[d*Np + par1] += f1[d];
+            }
+        }
+        return;
+    }
+
     double powerParticles(Particles* p){
         double power = 0.;
         for(int par1 = 0; par1 < D*Np; par1++){
