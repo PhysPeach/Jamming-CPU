@@ -8,5 +8,6 @@
 
 namespace PhysPeach{
     void createJammingTest();
+    void fireJammingTest();
 }
 #endif

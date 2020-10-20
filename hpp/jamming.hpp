@@ -21,6 +21,7 @@ namespace PhysPeach{
     double L(Jamming*);
     void createJamming(Jamming*);
     void deleteJamming(Jamming*);
+    int fireJamming(Jamming*);
 }
 
 #endif

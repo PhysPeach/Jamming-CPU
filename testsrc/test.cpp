@@ -45,6 +45,7 @@ int main(){
 
     //jamming_test
     PhysPeach::createJammingTest();
+    PhysPeach::fireJammingTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;
