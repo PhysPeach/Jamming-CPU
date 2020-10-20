@@ -25,15 +25,15 @@ namespace PhysPeach{
         double dt = dt_init;
         double alpha = alpha_init;
         double power;
-        bool mustUpdateCells;
+        bool mustUpdateCellList;
 
         bool converged = false;
         int cp = 0;
         setZero(jam->p.v, D*Np);
         while(!converged){
             loop++;
-            mustUpdateCells = updateParticles(&jam->p, L(jam), dt, &jam->lists);
-            if(mustUpdateCells){
+            mustUpdateCellList = updateParticles(&jam->p, L(jam), dt, &jam->lists);
+            if(mustUpdateCellList){
                 updateCellList(&jam->cells, &jam->lists, L(jam), jam->p.x);
             }
             converged = convergedFire(&jam->p);
@@ -61,5 +61,29 @@ namespace PhysPeach{
             }
         }
         return loop;
+    }
+
+    void addDphi(Jamming* jam, double dphi){
+        static double Lstart = L(jam);
+        bool mustUpdateCellList;
+        int loop;
+
+        jam->phi += dphi;
+        double Lend = L(jam);
+        squeezePositions(&jam->p, Lend/Lstart);
+        Lstart = Lend;
+
+        mustUpdateCellList = updateMem(&jam->p, Lend);
+        if((jam->cells.numOfCellsPerSide > 3 && Lend/(double)jam->cells.numOfCellsPerSide < 2 * a_max) || 2 * a_max < Lend/(double)(1+jam->cells.numOfCellsPerSide)){
+            deleteCells(&jam->cells);
+            createCells(&jam->cells, Lend);
+            mustUpdateCellList = true;
+        }
+        if(mustUpdateCellList){
+            updateCellList(&jam->cells, &jam->lists, Lend, jam->p.x);
+        }
+        loop = fireJamming(jam);
+        std::cout << "    " << jam->phi << ", " << U(&jam->p, Lend, &jam->lists) << ", " << P(&jam->p, Lend, &jam->lists) << ", " << loop << std::endl;
+        return;
     }
 }
