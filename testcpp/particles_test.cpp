@@ -1,4 +1,5 @@
 #include "../testhpp/particles_test.hpp"
+#include <fstream>
 
 namespace PhysPeach{
     void createParticlesTest(){
@@ -176,6 +177,7 @@ namespace PhysPeach{
 
         return;
     }
+
     void UandPTest(){
         Particles p;
         Cells cells;
@@ -195,6 +197,39 @@ namespace PhysPeach{
         deleteCells(&cells);
         deleteParticles(&p);
 
+        return;
+    }
+
+    void updateParticlesTest(){
+        Particles p;
+        Cells cells;
+        Lists lists;
+
+        createParticles(&p);
+        double L = pow(p.packing/Phi_init, 1./(double)D);
+        createCells(&cells, L);
+        createLists(&lists, &cells);
+        updateCells(&cells, L, p.x);
+        updateLists(&lists, &cells, L, p.x);
+
+        double updatecelllist;
+        double E1, E2;
+        for(int i = 0; i < 10000; i++){
+            if(i == 1000){
+                E1 = K(&p) + U(&p, L, &lists);
+            }
+            updatecelllist = updateParticles(&p, L, 0.001, &lists);
+            if(updatecelllist){
+                updateCells(&cells, L, p.x);
+                updateLists(&lists, &cells, L, p.x);
+            }
+        }
+        E2 = K(&p) + U(&p, L, &lists);
+        assert(-0.005 < E1 - E2 && E1 - E2 < 0.005);
+
+        deleteLists(&lists);
+        deleteCells(&cells);
+        deleteParticles(&p);
         return;
     }
 }

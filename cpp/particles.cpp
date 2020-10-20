@@ -1,6 +1,13 @@
 #include "../hpp/particles.hpp"
 
 namespace PhysPeach{
+    double K(Particles *p){
+        double K = 0.;
+        for(int par1 = 0; par1 < D*Np; par1++){
+            K += p->v[par1] * p->v[par1];
+        }
+        return K/(2. * (double)Np);
+    }
     double U(Particles *p, double L, Lists* lists){
         double U = 0.;
 
@@ -98,8 +105,8 @@ namespace PhysPeach{
                     rij = sqrt(rij2);
                     f_rij = 1/(rij * diamij) - 1/(diamij * diamij);
                     for(int d = 0; d < D; d++){
-                        f1[d] -= f_rij * xij[d];
-                        p->f[par2+d*Np] += f_rij * xij[d];
+                        f1[d] += f_rij * xij[d];
+                        p->f[par2+d*Np] -= f_rij * xij[d];
                     }
                 }
             }
@@ -203,6 +210,24 @@ namespace PhysPeach{
         free(p->v);
         free(p->f);
         return;
+    }
+
+    bool updateParticles(Particles *p, double L, double dt, Lists *lists){
+        double Lh = 0.5 * L;
+
+        for(int par1 = 0; par1 < D*Np; par1++){
+            p->v[par1] += 0.5 * dt * p->f[par1];
+        }
+        updateForces(p, L, lists);
+        for(int par1 = 0; par1 < Np; par1++){
+            for(int d = 0; d < D; d++){
+                p->v[d*Np+par1] += 0.5 * dt * p->f[d*Np+par1];
+                p->x[d*Np+par1] += dt * (p->v[d*Np+par1] + 0.5 * dt * p->f[d*Np+par1]);
+                if(p->x[d*Np+par1] > Lh){p->x[d*Np+par1] -= L;}
+                if(p->x[d*Np+par1] < -Lh){p->x[d*Np+par1] += L;}
+            }
+        }
+        return updateMem(p, L);
     }
 
     bool updateMem(Particles* p, double L){

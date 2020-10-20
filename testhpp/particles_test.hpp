@@ -15,5 +15,6 @@ namespace PhysPeach{
     void modifyVelocitiesTest();
     void UandPTest();
     void updateForcesTest();
+    void updateParticlesTest();
 }
 #endif

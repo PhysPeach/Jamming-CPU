@@ -31,6 +31,7 @@ int main(){
     PhysPeach::modifyVelocitiesTest();
     PhysPeach::UandPTest();
     PhysPeach::updateForcesTest();
+    PhysPeach::updateParticlesTest();
 
     //cells_test
     PhysPeach::createCellsTest();
