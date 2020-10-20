@@ -86,4 +86,24 @@ namespace PhysPeach{
         std::cout << "    " << jam->phi << ", " << U(&jam->p, Lend, &jam->lists) << ", " << P(&jam->p, Lend, &jam->lists) << ", " << loop << std::endl;
         return;
     }
+
+    void findJamming(Jamming* jam){
+        std::cout << std::endl << "Find jamming point" << std::endl;
+
+        std::cout << "    Squeeze from phi = " << jam->phi << std::endl;
+        std::cout << "    dphi, E, P, loop:" << std::endl;
+        fireJamming(jam);
+        while (P(&jam->p, L(jam), &jam->lists) < 1.0e-8){
+            addDphi(jam, 1.0e-4);
+        }
+        std::cout << "    Expand from phi = " << jam->phi << std::endl;
+        while (P(&jam->p, L(jam), &jam->lists) > 1.0e-8){
+            addDphi(jam, -1.0e-5);
+        }
+        while (P(&jam->p, L(jam), &jam->lists) < 1.0e-8){
+            addDphi(jam, 1.0e-6);
+        }
+        std::cout << "-> Jamming Point: " << jam->phi << std::endl;
+        return;
+    }
 }

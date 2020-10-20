@@ -290,7 +290,7 @@ namespace PhysPeach{
 
     bool convergedFire(Particles *p){
         double fsum = 0.;
-        double fmax = 1.0e-13;
+        double fmax = 3.0e-12;
         double f2;
         for(int par1 = 0; par1 < Np; par1++){
             f2 = 0.;

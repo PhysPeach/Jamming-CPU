@@ -85,15 +85,15 @@ namespace PhysPeach{
         converged = convergedFire(&p);
         assert(converged);
 
-        p.f[0] = 1.0e-12 * D*Np;
+        p.f[0] = 1.0e-10 * D*Np;
         converged = convergedFire(&p);
         assert(!converged);
 
-        p.f[0] = 1.0e-14 * D*Np;
+        p.f[0] = 1.0e-12 * D*Np;
         converged = convergedFire(&p);
         assert(converged);
 
-        p.f[D*Np - 1] = 1.0e-13 * D*Np;
+        p.f[D*Np - 1] = 3.0e-12 * D*Np;
         converged = convergedFire(&p);
         assert(!converged);
 
