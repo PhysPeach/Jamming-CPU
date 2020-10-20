@@ -31,20 +31,31 @@ namespace PhysPeach{
     }
 
     void updateCellsTest(){
-        //test it in small Np
-        double *x;
-        x = (double*)malloc(D*Np*sizeof(double));
-        for(int par1 = 0; par1 < D*Np; par1++){
-            x[par1] = 1.;
-        }
 
         Cells cells;
-        createCells(&cells, 10.);
-        updateCells(&cells, 10., x);
-        assert(cells.Nc == Np+1);
-        deleteCells(&cells);
 
-        free(x);
+        if(Np <= 100){
+            //test it in small Np
+            double *x;
+            x = (double*)malloc(D*Np*sizeof(double));
+            for(int par1 = 0; par1 < D*Np; par1++){
+                x[par1] = 1.;
+            }
+            createCells(&cells, 10.);
+            updateCells(&cells, 10., x);
+            assert(cells.Nc == Np+1);
+            deleteCells(&cells);
+            free(x);
+        }
+
+        Particles p;
+        createParticles(&p);
+        double L = pow(p.packing/Phi_init, 1./(double)D);
+        createCells(&cells, L);
+        updateCells(&cells, L, p.x);
+        deleteCells(&cells);
+        deleteParticles(&p);
+
         return;
     }
 
@@ -86,35 +97,55 @@ namespace PhysPeach{
     }
 
     void updateListsTest(){
-        //test it in small Np
-        double *x;
-        x = (double*)malloc(D*Np*sizeof(double));
-        for(int par1 = 0; par1 < D*Np; par1++){
-            x[par1] = 1.;
-        }
 
         Cells cells;
         Lists lists;
-        createCells(&cells, 10.);
+
+        if(Np <= 100){
+            //test it in small Np
+            double *x;
+            x = (double*)malloc(D*Np*sizeof(double));
+            for(int par1 = 0; par1 < D*Np; par1++){
+                x[par1] = 1.;
+            }
+            createCells(&cells, 10.);
+            createLists(&lists, &cells);
+
+            updateCells(&cells, 10., x);
+            updateLists(&lists, &cells, 10., x);
+            assert(lists.Nl == Np);
+            assert(lists.list[0] == Np - 1);
+            for(int i = 1; i <= lists.list[0]; i++){
+                assert(lists.list[i] == i);
+            }
+            assert(lists.list[lists.Nl] == Np -2);
+            for(int i = 1; i < lists.list[lists.Nl]; i++){
+                assert(lists.list[lists.Nl+i] == i+1);
+            }
+            deleteLists(&lists);
+            deleteCells(&cells);
+            free(x);
+        }
+
+        Particles p;
+        createParticles(&p);
+        double L = pow(p.packing/Phi_init, 1./(double)D);
+        createCells(&cells, L);
         createLists(&lists, &cells);
-
-        updateCells(&cells, 10., x);
-        updateLists(&lists, &cells, 10., x);
-        assert(lists.Nl == Np);
-        assert(lists.list[0] == Np - 1);
-        for(int i = 1; i <= lists.list[0]; i++){
-            assert(lists.list[i] == i);
+        updateCells(&cells, L, p.x);
+        updateLists(&lists, &cells, L, p.x);
+        int NoL = lists.Nl * Np;
+        for(int n = 0; n < Np; n++){
+            std::cout << n << " " << p.x[n] << " " << p.x[Np+n] << std::endl;
         }
-        assert(lists.list[lists.Nl] == Np -2);
-        for(int i = 1; i < lists.list[lists.Nl]; i++){
-            assert(lists.list[lists.Nl+i] == i+1);
+        for(int n = 0; n < 20; n++){
+            for(int l = 0; l < lists.Nl; l++){
+                std::cout << n << " " << l << " " << lists.list[n*lists.Nl+l] << std::endl;
+            }
         }
-        
-
-        deleteLists(&lists);
         deleteCells(&cells);
+        deleteParticles(&p);
 
-        free(x);
         return;
     }
 }

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <assert.h>
 
+#include "../hpp/particles.hpp"
 #include "../hpp/cells.hpp"
 
 namespace PhysPeach{
