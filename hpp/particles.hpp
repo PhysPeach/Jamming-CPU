@@ -21,6 +21,8 @@ namespace PhysPeach{
         double *v;
         double *f;
     };
+    double U(Particles*, double, Lists*);
+    double P(Particles*, double, Lists*);
     void updateForces(Particles*, double, Lists*);
     double powerParticles(Particles* p);
     void createParticles(Particles*);

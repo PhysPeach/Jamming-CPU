@@ -1,6 +1,74 @@
 #include "../hpp/particles.hpp"
 
 namespace PhysPeach{
+    double U(Particles *p, double L, Lists* lists){
+        double U = 0.;
+
+        double diam1, x1[D];
+        int par2;
+        double xij[D], rij2, diamij, r_aij;
+        int cell1, cell2, cell3;
+        int list;
+        double Lh = 0.5 * L;
+        for(int par1 = 0; par1 < Np; par1++){
+            diam1 = p->diam[par1];
+            for(int d = 0; d < D; d++){
+                x1[d] = p->x[d*Np + par1];
+            }
+            for(int k = 1; k<= lists->list[par1*lists->Nl]; k++){
+                par2 = lists->list[par1*lists->Nl + k];
+                diamij = 0.5 * (diam1 + p->diam[par2]);
+                rij2 = 0.;
+                for(int d = 0; d < D; d++){
+                    xij[d] = x1[d] - p->x[d*Np + par2];
+                    if (xij[d] > Lh){xij[d] -= L;}
+                    if (xij[d] < -Lh){xij[d] += L;}
+                    rij2 += xij[d] * xij[d];
+                }
+                if(0 < rij2 && rij2 < diamij * diamij){
+                    r_aij = sqrt(rij2)/diamij;
+                    U += 0.5 * (1 - r_aij) * (1 - r_aij);
+                }
+            }
+        }
+        return U/(double)Np;
+    }
+
+    double P(Particles *p, double L, Lists* lists){
+        double P = 0.;
+
+        double diam1, x1[D];
+        int par2;
+        double xij[D], rij, rij2, diamij, f_rij;
+        int cell1, cell2, cell3;
+        int list;
+        double Lh = 0.5 * L;
+        for(int par1 = 0; par1 < Np; par1++){
+            diam1 = p->diam[par1];
+            for(int d = 0; d < D; d++){
+                x1[d] = p->x[d*Np + par1];
+            }
+            for(int k = 1; k<= lists->list[par1*lists->Nl]; k++){
+                par2 = lists->list[par1*lists->Nl + k];
+                diamij = 0.5 * (diam1 + p->diam[par2]);
+                rij2 = 0.;
+                for(int d = 0; d < D; d++){
+                    xij[d] = x1[d] - p->x[d*Np + par2];
+                    if (xij[d] > Lh){xij[d] -= L;}
+                    if (xij[d] < -Lh){xij[d] += L;}
+                    rij2 += xij[d] * xij[d];
+                }
+                if(0 < rij2 && rij2 < diamij * diamij){
+                    rij = sqrt(rij2);
+                    f_rij = 1/(rij * diamij) - 1/(diamij * diamij);
+                    P += 0.5 * f_rij * rij2;
+                }
+            }
+        }
+        double Vol = powInt(L, D);
+        return P /= Vol;
+    }
+    
     void updateForces(Particles *p, double L, Lists* lists){
         double diam1, x1[D], f1[D];
         int par2;

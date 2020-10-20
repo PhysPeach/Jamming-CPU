@@ -28,6 +28,7 @@ int main(){
     PhysPeach::convergedFireTest();
     PhysPeach::updateMemTest();
     PhysPeach::modifyVelocitiesTest();
+    PhysPeach::UandPTest();
     PhysPeach::updateForcesTest();
 
     //cells_test
