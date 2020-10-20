@@ -32,11 +32,12 @@ namespace PhysPeach{
     bool putParticlesIntoCells(Cells *cells, double L, double* x){
         int c1, c2, c3;
         double Lc = L/(double)cells->numOfCellsPerSide;
+        double Lh = 0.5 * L;
         int NoC = powInt(cells->Nc, D)*cells->Nc;
         setZero(cells->cell, NoC);
         for(int par1 = 0; par1 < Np; par1++){
-            c1 = (x[par1] + 0.5 * L)/Lc;
-            c2 = (x[par1+Np] + 0.5 * L)/Lc;
+            c1 = (x[par1] + Lh)/Lc;
+            c2 = (x[par1+Np] + Lh)/Lc;
             if(c1 >= cells->numOfCellsPerSide){c1 -= cells->numOfCellsPerSide;}
             if(c1 < 0){c1 += cells->numOfCellsPerSide;}
             if(c2 >= cells->numOfCellsPerSide){c2 -= cells->numOfCellsPerSide;}
@@ -98,6 +99,7 @@ namespace PhysPeach{
 
     bool putParticlesIntoLists(Lists *lists, Cells *cells, double L, double* x){
         int c1, c2, c3;
+        int g1, g2, g3;
         int numOfParticlesInCell;
         double Lc = L/(double)cells->numOfCellsPerSide;
         double Lh = 0.5 * L;
@@ -111,20 +113,22 @@ namespace PhysPeach{
 
         for(int par1 = 0; par1< Np; par1++){
             for(int d = 0; d < D; d++){
-                x[d] = x[d*Np+par1];
+                x1[d] = x[d*Np+par1];
             }
-            c1 = (x1[0] + 0.5 * L)/Lc;
-            c2 = (x1[1] + 0.5 * L)/Lc;
+            c1 = (x1[0] + Lh)/Lc;
+            c2 = (x1[1] + Lh)/Lc;
             if(c1 >= cells->numOfCellsPerSide){c1 -= cells->numOfCellsPerSide;}
             if(c1 < 0){c1 += cells->numOfCellsPerSide;}
             if(c2 >= cells->numOfCellsPerSide){c2 -= cells->numOfCellsPerSide;}
             if(c2 < 0){c2 += cells->numOfCellsPerSide;}
 
-            for(int i1 = c1-1; i1 <= c1+1; i1++){
-                for(int i2= c2-1; i2 <= c2+1; i2++){
-                    numOfParticlesInCell = cells->cell[(fix(i1, cells->numOfCellsPerSide)*cells->numOfCellsPerSide+fix(i2, cells->numOfCellsPerSide))*cells->Nc];
+            for(int e1 = c1-1; e1 <= c1+1; e1++){
+                g1 = fix(e1, cells->numOfCellsPerSide);
+                for(int e2= c2-1; e2 <= c2+1; e2++){
+                    g2 = fix(e2, cells->numOfCellsPerSide);
+                    numOfParticlesInCell = cells->cell[(g1*cells->numOfCellsPerSide+g2)*cells->Nc];
                     for(int k = 1; k<= numOfParticlesInCell;k++){
-                        par2 = cells->cell[(fix(i1, cells->numOfCellsPerSide)*cells->numOfCellsPerSide+fix(i2, cells->numOfCellsPerSide))*cells->Nc + k];
+                        par2 = cells->cell[(g1*cells->numOfCellsPerSide+g2)*cells->Nc + k];
                         if(par2 > par1){
                             dr = 0.;
                             for(int d = 0; d < D; d++){
@@ -133,7 +137,7 @@ namespace PhysPeach{
                                 if(dx[d] > Lh) dx[d] -= L;
                                 dr += dx[d] * dx[d];
                             }
-                            if(dr < 2 * a_max){
+                            if(dr < 4 * a_max * a_max){
                                 lists->list[par1*lists->Nl]++;
                                 if(lists->list[par1*lists->Nl] >= lists->Nl){
                                     return false;
