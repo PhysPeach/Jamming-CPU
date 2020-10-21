@@ -81,7 +81,7 @@ namespace PhysPeach{
         return loop;
     }
 
-    void addDphi(Jamming* jam, double dphi){
+    int addDphi(Jamming* jam, double dphi){
         static double Lstart = L(jam);
         bool mustUpdateCellList;
         int loop;
@@ -101,18 +101,29 @@ namespace PhysPeach{
             updateCellList(&jam->cells, &jam->lists, Lend, jam->p.x);
         }
         loop = fireJamming(jam);
-        std::cout << "    " << jam->phi << ", " << U(&jam->p, Lend, &jam->lists) << ", " << P(&jam->p, Lend, &jam->lists) << ", " << loop << std::endl;
-        return;
+        return loop;
     }
 
     void findJamming(Jamming* jam){
+        int loop = 0;
         std::cout << std::endl << "Find jamming point" << std::endl;
 
         std::cout << "    Squeeze from phi = " << jam->phi << std::endl;
         std::cout << "    dphi, E, P, loop:" << std::endl;
         fireJamming(jam);
-        while (P(&jam->p, L(jam), &jam->lists) < 1.0e-8){
-            addDphi(jam, 1.0e-4);
+
+        int aboveJammingCount = 0;
+        double Pnow;
+        while (aboveJammingCount < 3){
+            Pnow = P(&jam->p, L(jam), &jam->lists);
+            std::cout << "    " << jam->phi << ", " << U(&jam->p, L(jam), &jam->lists) << ", " << Pnow << ", " << loop << std::endl;
+            if(Pnow > 1.0e-8){
+                aboveJammingCount++;
+            }
+            if(aboveJammingCount != 0 && Pnow < 1.0e-8){
+                aboveJammingCount = 0;
+            }
+            loop = addDphi(jam, 1.0e-4);
         }
         std::cout << "    Expand from phi = " << jam->phi << std::endl;
         while (P(&jam->p, L(jam), &jam->lists) > 1.0e-8){
