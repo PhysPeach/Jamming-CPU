@@ -17,12 +17,35 @@ namespace PhysPeach{
     void loadSwapMC(Jamming* jam){
         jam->phi = Phi_init;
         
-        std::ostringstream inFileName;
-        inFileName << "../../swapmc/pos/";
-        inFileName << "pos_N" << Np << "_Phi" << Phi_init << "_id" << ID << ".data";
-        std::ifstream inFile;
-        inFile.open(inFileName.str().c_str());
-        createParticles(&jam->p, &inFile);
+        std::ostringstream posName;
+        posName << "../../swapmc/pos/";
+        posName << "pos_N" << Np << "_Phi" << Phi_init << "_id" << ID << ".data";
+        std::ifstream file;
+        file.open(posName.str().c_str());
+        createParticles(&jam->p, &file);
+        file.close();
+        createCells(&jam->cells, L(jam));
+        createLists(&jam->lists, &jam->cells);
+        updateCellList(&jam->cells, &jam->lists, L(jam), jam->p.x);
+        return;
+    }
+
+    void loadJamming(Jamming* jam){
+
+        std::ifstream file;
+
+        std::ostringstream jammingName;
+        jammingName << "../jammingpoint/jam_N" << Np << "_Phi" << Phi_init << "_id" << ID <<".data";
+        file.open(jammingName.str().c_str());
+        file >> jam->phi;
+        file.close();
+        
+        std::ostringstream posName;
+        posName << "../pos/pos_N" << Np << "_Phi" << Phi_init << "_id" << ID << ".data";
+        file.open(posName.str().c_str());
+        createParticles(&jam->p, &file);
+        file.close();
+
         createCells(&jam->cells, L(jam));
         createLists(&jam->lists, &jam->cells);
         updateCellList(&jam->cells, &jam->lists, L(jam), jam->p.x);
