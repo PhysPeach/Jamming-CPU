@@ -43,10 +43,20 @@ namespace PhysPeach{
         return;
     }
 
-    void findJammingTest(){
+    void getCloserJammingTest(){
         Jamming jam;
         createJamming(&jam);
-        findJamming(&jam);
+        double dphi = 1.0e-4;
+        while(dphi > 5.0e-5){
+            getCloserJamming(&jam, 1.0e-4);
+        }
+        double pressure = P(&jam.p, L(&jam), &jam.lists);
+        assert(pressure < 1.0e-8);
+        addDphi(&jam, 1.0e-4);
+        pressure = P(&jam.p, L(&jam), &jam.lists);
+        assert(pressure > 1.0e-8);
         deleteJamming(&jam);
+
+        return;
     }
 }

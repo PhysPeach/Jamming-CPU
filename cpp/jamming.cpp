@@ -6,7 +6,6 @@ namespace PhysPeach{
     }
 
     void createJamming(Jamming* jam){
-        jam->t = 0.;
         jam->phi = Phi_init;
         createParticles(&jam->p);
         createCells(&jam->cells, L(jam));
@@ -16,7 +15,6 @@ namespace PhysPeach{
     }
 
     void loadJamming(Jamming* jam){
-        jam->t = 0.;
         jam->phi = Phi_init;
         
         std::ostringstream inFileName;
@@ -73,7 +71,6 @@ namespace PhysPeach{
                     cp = 0;
                 }
             }
-            jam->t += dt;
             if(loop == 1000000){
                 std::cout << "dt: " << dt << std::endl;
             }
@@ -104,36 +101,43 @@ namespace PhysPeach{
         return loop;
     }
 
-    void findJamming(Jamming* jam){
+    double getCloserJamming(Jamming* jam, double dphi){
         int loop = 0;
-        std::cout << std::endl << "Find jamming point" << std::endl;
+        std::cout << "    Squeeze from phi = " << jam->phi << " by dphi = " << dphi << std::endl;
+        std::cout << "    phi, E, P, loop:" << std::endl;
 
-        std::cout << "    Squeeze from phi = " << jam->phi << std::endl;
-        std::cout << "    dphi, E, P, loop:" << std::endl;
-        fireJamming(jam);
+        double phimem = jam->phi;
+        double *xmem;
+        xmem = (double*)malloc(D*Np*sizeof(double));
+        memcpy(xmem, jam->p.x, D*Np*sizeof(double));
 
         int aboveJammingCount = 0;
         double Pnow;
-        while (aboveJammingCount < 3){
+        while (aboveJammingCount < 10){
             Pnow = P(&jam->p, L(jam), &jam->lists);
             std::cout << "    " << jam->phi << ", " << U(&jam->p, L(jam), &jam->lists) << ", " << Pnow << ", " << loop << std::endl;
             if(Pnow > 1.0e-8){
                 aboveJammingCount++;
+                if(dphi < 5.0e-6 && aboveJammingCount == 1){
+                    phimem = jam->phi;
+                    memcpy(xmem, jam->p.x, D*Np*sizeof(double));
+                }
             }
-            if(aboveJammingCount != 0 && Pnow < 1.0e-8){
-                aboveJammingCount = 0;
+            if(Pnow < 1.0e-8){
+                phimem = jam->phi;
+                memcpy(xmem, jam->p.x, D*Np);
+                if(aboveJammingCount > 0){
+                    return 1.0e-4;
+                }
             }
-            loop = addDphi(jam, 1.0e-4);
+            loop = addDphi(jam, dphi);
         }
-        std::cout << "    Expand from phi = " << jam->phi << std::endl;
-        while (P(&jam->p, L(jam), &jam->lists) > 1.0e-8){
-            addDphi(jam, -1.0e-5);
-        }
-        while (P(&jam->p, L(jam), &jam->lists) < 1.0e-8){
-            addDphi(jam, 1.0e-6);
-        }
-        std::cout << "-> Jamming Point: " << jam->phi << std::endl;
-        return;
+        aboveJammingCount = 0;
+        jam->phi = phimem;
+        memcpy(jam->p.x, xmem, D*Np*sizeof(double));
+
+        free(xmem);
+        return 0.1 * dphi;
     }
 
     void squeezeJamming(Jamming *jam){

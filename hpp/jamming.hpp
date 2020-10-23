@@ -13,7 +13,6 @@
 namespace PhysPeach{
     struct Jamming {
         double phi;
-        double t;
         Particles p;
         Cells cells;
         Lists lists;
@@ -24,6 +23,7 @@ namespace PhysPeach{
     void deleteJamming(Jamming*);
     int fireJamming(Jamming*);
     int addDphi(Jamming*, double);
+    double getCloserJamming(Jamming*, double);
     void findJamming(Jamming*);
     void squeezeJamming(Jamming*);
 }
