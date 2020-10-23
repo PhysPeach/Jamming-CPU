@@ -156,7 +156,7 @@ namespace PhysPeach{
             }
             loop = addDphi(jam, dphi);
         }
-        if(aboveJammingcount >= 10){
+        if(aboveJammingCount >= 10){
             jam->phi = phimem;
             memcpy(jam->p.x, xmem, D*Np*sizeof(double));
             free(xmem);
