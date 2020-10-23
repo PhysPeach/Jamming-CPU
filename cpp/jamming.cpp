@@ -148,7 +148,7 @@ namespace PhysPeach{
             }
             if(Pnow < 1.0e-8){
                 phimem = jam->phi;
-                memcpy(xmem, jam->p.x, D*Np);
+                memcpy(xmem, jam->p.x, D*Np*sizeof(double));
                 if(aboveJammingCount > 0){
                     return 1.0e-4;
                 }
