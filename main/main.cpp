@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
     std::cout << "-------------------" << std::endl << std::endl;
 
     PhysPeach::Jamming jam;
-    PhysPeach::loadJamming(&jam);
+    PhysPeach::loadSwapMC(&jam);
     PhysPeach::findJamming(&jam);
     PhysPeach::squeezeJamming(&jam);
     PhysPeach::deleteJamming(&jam);

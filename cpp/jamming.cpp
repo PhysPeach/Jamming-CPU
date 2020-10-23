@@ -14,7 +14,7 @@ namespace PhysPeach{
         return;
     }
 
-    void loadJamming(Jamming* jam){
+    void loadSwapMC(Jamming* jam){
         jam->phi = Phi_init;
         
         std::ostringstream inFileName;

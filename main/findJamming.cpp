@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
     std::cout << "-------------------" << std::endl << std::endl;
 
     PhysPeach::Jamming jam;
-    PhysPeach::loadJamming(&jam);
+    PhysPeach::loadSwapMC(&jam);
     PhysPeach::fireJamming(&jam);
     double dphi = 1.0e-4;
     while (dphi > 5.0e-7){
