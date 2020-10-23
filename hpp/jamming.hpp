@@ -25,8 +25,6 @@ namespace PhysPeach{
     int fireJamming(Jamming*);
     int addDphi(Jamming*, double);
     double getCloserJamming(Jamming*, double);
-    void findJamming(Jamming*);
-    void squeezeJamming(Jamming*);
 }
 
 #endif

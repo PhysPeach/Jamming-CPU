@@ -142,71 +142,29 @@ namespace PhysPeach{
             if(Pnow > 1.0e-8){
                 aboveJammingCount++;
                 if(dphi < 5.0e-6 && aboveJammingCount == 1){
+                    //if only dphi == 1.0e-6 case
                     phimem = jam->phi;
                     memcpy(xmem, jam->p.x, D*Np*sizeof(double));
                 }
             }
             if(Pnow < 1.0e-8){
+                if(aboveJammingCount > 0){
+                    break;
+                }
                 phimem = jam->phi;
                 memcpy(xmem, jam->p.x, D*Np*sizeof(double));
-                if(aboveJammingCount > 0){
-                    return 1.0e-4;
-                }
             }
             loop = addDphi(jam, dphi);
         }
-        aboveJammingCount = 0;
-        jam->phi = phimem;
-        memcpy(jam->p.x, xmem, D*Np*sizeof(double));
-
-        free(xmem);
-        return 0.1 * dphi;
-    }
-
-    void squeezeJamming(Jamming *jam){
-        double jammingPoint = jam->phi;
-        double dphi;
-
-        std::cout << "Squeeze from phi = " << jam->phi << std::endl;
-        std::ostringstream fileName;
-        fileName << "../squeeze/sq_N" << Np << "_Phi" << Phi_init << "_Dphi" << Dphi << "_id" << ID <<".data";
-        std::ofstream file;
-        file.open(fileName.str().c_str());
-        file << jammingPoint << std::endl << std::endl;
-
-        double delta = 0.;
-        dphi = 1.0e-6;
-        for (int i = 0; i < 10; i++){
-            if(delta > Dphi){
-                break;
-            }
-            addDphi(jam, dphi);
-            delta = jam->phi - jammingPoint;
-            file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
+        if(aboveJammingcount >= 10){
+            jam->phi = phimem;
+            memcpy(jam->p.x, xmem, D*Np*sizeof(double));
+            free(xmem);
+            return 0.1 * dphi;
         }
-        dphi = 1.0e-5;
-        for (int i = 1; i < 10; i++){
-            if(delta > Dphi){
-                break;
-            }
-            addDphi(jam, dphi);
-            delta = jam->phi - jammingPoint;
-            file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
+        else{
+            free(xmem);
+            return 1.0e-4;
         }
-        dphi = 1.0e-4;
-        double OutputAt = jam->phi - jammingPoint;
-        while(delta <= Dphi){
-            addDphi(jam, dphi);
-            delta = jam->phi - jammingPoint;
-            if(delta >= OutputAt){
-                file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
-                OutputAt = 1.1 * delta;
-            }
-        }
-        file << delta << " " << P(&jam->p, L(jam), &jam->lists) << std::endl;
-        file.close();
-        std::cout << "finished!: phi = " << jam->phi << std::endl;
-
-        return;
     }
 }
