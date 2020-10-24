@@ -28,36 +28,32 @@ int main(int argc, char** argv) {
     std::ofstream file;
 
     std::cout << "Squeeze from phi = " << jam.phi << std::endl;
+    std::cout << "    phi, E, P, loop:" << std::endl;
     double jammingPoint = jam.phi;
     double dphi;
     std::ostringstream PphiName;
     PphiName << "../p-phi/p-phi_N" << Np << "_Phi" << Phi_init << "_Dphi" << Dphi << "_id" << ID <<".data";
     file.open(PphiName.str().c_str());
-    file << jammingPoint << std::endl << std::endl;
 
     double delta = 0.;
-    dphi = 1.0e-6;
-    for (int i = 0; i < 10; i++){
-        if(delta > Dphi){
+    double Pnow;
+    int loop;
+    for(dphi = 1.0e-6; dphi < 1.0e-4; dphi *= 1.1){
+        loop = addDphi(&jam, dphi);
+        delta = jam.phi jammingpoint;
+        Pnow = P(&jam.p, L(&jam), &jam.lists);
+        std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
+        file << delta << " " << Pnow << std::endl;
+        if(delta >= Dphi){
             break;
         }
-        addDphi(&jam, dphi);
-        delta = jam.phi - jammingPoint;
-        file << delta << " " << P(&jam.p, L(&jam), &jam.lists) << std::endl;
-    }
-    dphi = 1.0e-5;
-    for (int i = 1; i < 10; i++){
-        if(delta > Dphi){
-            break;
-        }
-        addDphi(&jam, dphi);
-        delta = jam.phi - jammingPoint;
-        file << delta << " " << P(&jam.p, L(&jam), &jam.lists) << std::endl;
     }
     dphi = 1.0e-4;
     double OutputAt = jam.phi - jammingPoint;
-    while(delta <= Dphi){
-        addDphi(&jam, dphi);
+    while(delta < Dphi){
+        loop = addDphi(&jam, dphi);
+        Pnow = P(&jam.p, L(&jam), &jam.lists);
+        std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
         delta = jam.phi - jammingPoint;
         if(delta >= OutputAt){
             file << delta << " " << P(&jam.p, L(&jam), &jam.lists) << std::endl;
