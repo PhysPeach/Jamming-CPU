@@ -123,48 +123,4 @@ namespace PhysPeach{
         loop = fireJamming(jam);
         return loop;
     }
-
-    double getCloserJamming(Jamming* jam, double dphi){
-        int loop = 0;
-        std::cout << "    Squeeze from phi = " << jam->phi << " by dphi = " << dphi << std::endl;
-        std::cout << "    phi, E, P, loop:" << std::endl;
-
-        double phimem = jam->phi;
-        double *xmem;
-        xmem = (double*)malloc(D*Np*sizeof(double));
-        memcpy(xmem, jam->p.x, D*Np*sizeof(double));
-
-        int aboveJammingCount = 0;
-        double Pnow;
-        while (aboveJammingCount < 10){
-            Pnow = P(&jam->p, L(jam), &jam->lists);
-            std::cout << "    " << jam->phi << ", " << U(&jam->p, L(jam), &jam->lists) << ", " << Pnow << ", " << loop << std::endl;
-            if(Pnow > 1.0e-8){
-                aboveJammingCount++;
-                if(dphi < 5.0e-6 && aboveJammingCount == 1){
-                    //if only dphi == 1.0e-6 case
-                    phimem = jam->phi;
-                    memcpy(xmem, jam->p.x, D*Np*sizeof(double));
-                }
-            }
-            if(Pnow < 1.0e-8){
-                if(aboveJammingCount > 0){
-                    break;
-                }
-                phimem = jam->phi;
-                memcpy(xmem, jam->p.x, D*Np*sizeof(double));
-            }
-            loop = addDphi(jam, dphi);
-        }
-        if(aboveJammingCount >= 10){
-            jam->phi = phimem;
-            memcpy(jam->p.x, xmem, D*Np*sizeof(double));
-            free(xmem);
-            return 0.1 * dphi;
-        }
-        else{
-            free(xmem);
-            return 1.0e-4;
-        }
-    }
 }

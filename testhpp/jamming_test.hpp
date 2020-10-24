@@ -10,6 +10,5 @@ namespace PhysPeach{
     void createJammingTest();
     void fireJammingTest();
     void addDphiTest();
-    void getCloserJammingTest();
 }
 #endif

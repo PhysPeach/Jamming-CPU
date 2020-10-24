@@ -25,9 +25,48 @@ int main(int argc, char** argv) {
     PhysPeach::Jamming jam;
     PhysPeach::loadSwapMC(&jam);
     PhysPeach::fireJamming(&jam);
-    double dphi = 1.0e-4;
-    while (dphi > 5.0e-7){
-        dphi = PhysPeach::getCloserJamming(&jam, dphi);
+
+    double phimem;
+    double *xmem;
+    xmem = (double*)malloc(D*Np*sizeof(double));
+    memcpy(xmem, jam.p.x, D*Np*sizeof(double));
+
+    double Pnow = P(&jam.p, L(&jam), &jam.lists);
+    double loop = 0;
+
+    std::cout << "    Squeeze from phi = " << jam.phi << " by dphi = " << 1.0e-4 << std::endl;
+    std::cout << "    phi, E, P, loop:" << std::endl;
+    while (jam.phi < 0.84 || Pnow < 1.0e-8){
+        std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
+        phimem = jam.phi;
+        memcpy(xmem, jam.p.x, D*Np*sizeof(double));
+        loop = PhysPeach::addDphi(&jam, 1.0e-4);
+        Pnow = P(&jam.p, L(&jam), &jam.lists);
+    }
+    jam.phi = phimem;
+    memcpy(jam.p.x, xmem, D*Np*sizeof(double));
+    Pnow = P(&jam.p, L(&jam), &jam.lists);
+
+    std::cout << "    Squeeze from phi = " << jam.phi << " by dphi = " << 1.0e-5 << std::endl;
+    std::cout << "    phi, E, P, loop:" << std::endl;
+    while (Pnow < 1.0e-8){
+        std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
+        phimem = jam.phi;
+        memcpy(xmem, jam.p.x, D*Np*sizeof(double));
+        loop = PhysPeach::addDphi(&jam, 1.0e-5);
+        Pnow = P(&jam.p, L(&jam), &jam.lists);
+    }
+    jam.phi = phimem;
+    memcpy(jam.p.x, xmem, D*Np*sizeof(double));
+    free(xmem);
+    Pnow = P(&jam.p, L(&jam), &jam.lists);
+
+    std::cout << "    Squeeze from phi = " << jam.phi << " by dphi = " << 1.0e-6 << std::endl;
+    std::cout << "    phi, E, P, loop:" << std::endl;
+    while (Pnow < 1.0e-8){
+        std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
+        loop = PhysPeach::addDphi(&jam, 1.0e-6);
+        Pnow = P(&jam.p, L(&jam), &jam.lists);
     }
     std::cout << "-> Jamming Point: " << jam.phi << std::endl;
 

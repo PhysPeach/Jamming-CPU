@@ -49,7 +49,6 @@ int main(){
     PhysPeach::createJammingTest();
     PhysPeach::fireJammingTest();
     //PhysPeach::addDphiTest();
-    PhysPeach::getCloserJammingTest();
 
     std::cout << "---finished---" << std::endl;
     return 0;
