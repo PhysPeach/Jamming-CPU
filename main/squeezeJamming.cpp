@@ -40,7 +40,7 @@ int main(int argc, char** argv) {
     int loop;
     for(dphi = 1.0e-6; dphi < 1.0e-4; dphi *= 1.1){
         loop = addDphi(&jam, dphi);
-        delta = jam.phi jammingpoint;
+        delta = jam.phi - jammingPoint;
         Pnow = P(&jam.p, L(&jam), &jam.lists);
         std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
         file << delta << " " << Pnow << std::endl;
