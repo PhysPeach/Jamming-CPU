@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
         loop = PhysPeach::addDphi(&jam, 1.0e-6);
         Pnow = P(&jam.p, L(&jam), &jam.lists);
     }
+    std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
     std::cout << "-> Jamming Point: " << jam.phi << std::endl;
 
     std::ofstream file;

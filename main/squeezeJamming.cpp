@@ -44,13 +44,13 @@ int main(int argc, char** argv) {
         Pnow = P(&jam.p, L(&jam), &jam.lists);
         std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
         file << delta << " " << Pnow << std::endl;
-        if(delta >= Dphi){
+        if(delta >= Dphi || Pnow <= 1.0e-8){
             break;
         }
     }
     dphi = 1.0e-4;
     double OutputAt = jam.phi - jammingPoint;
-    while(delta < Dphi){
+    while(delta < Dphi || Pnow > 1.0e-8){
         loop = addDphi(&jam, dphi);
         Pnow = P(&jam.p, L(&jam), &jam.lists);
         std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
@@ -61,6 +61,9 @@ int main(int argc, char** argv) {
         }
     }
     file << delta << " " << P(&jam.p, L(&jam), &jam.lists) << std::endl;
+    if(Pnow < 1.0e-8){
+        std::cout << "melted !" << std::endl;
+    }
     file.close();
     std::cout << "finished!: phi = " << jam.phi << std::endl;
 
