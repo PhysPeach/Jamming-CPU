@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
     }
     dphi = 1.0e-4;
     double OutputAt = jam.phi - jammingPoint;
-    while(delta < Dphi || Pnow > 1.0e-8){
+    while(delta < Dphi && Pnow > 1.0e-8){
         loop = addDphi(&jam, dphi);
         Pnow = P(&jam.p, L(&jam), &jam.lists);
         std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
