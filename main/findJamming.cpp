@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
         Pnow = P(&jam.p, L(&jam), &jam.lists);
         std::cout << "    " << jam.phi << ", " << U(&jam.p, L(&jam), &jam.lists) << ", " << Pnow << ", " << loop << std::endl;
     }
-    jam.phi = phimem;
+    phimem = jam.phi;
     memcpy(xmem, jam.p.x, D*Np*sizeof(double));
     Pnow = P(&jam.p, L(&jam), &jam.lists);
 
