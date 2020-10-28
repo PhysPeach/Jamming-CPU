@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     double delta = 0.;
     double Pnow;
     int loop;
-    for(dphi = 1.0e-6; dphi < 1.0e-4; dphi *= 1.1){
+    for(dphi = 1.0e-5; dphi < 1.0e-4; dphi *= 1.1){
         loop = addDphi(&jam, dphi);
         delta = jam.phi - jammingPoint;
         Pnow = P(&jam.p, L(&jam), &jam.lists);
