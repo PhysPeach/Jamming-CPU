@@ -39,13 +39,11 @@ int main(int argc, char** argv) {
     ID = atoi(argv[1]);
     Np = atoi(argv[2]);
     Phi_init = atof(argv[3]);
-    Dphi = atof(argv[4]);
 
     std::cout << "-- squeeze jamming --" << std::endl;
     std::cout << "ID       : " << ID << std::endl;
     std::cout << "Np       : " << Np << std::endl;
     std::cout << "Phi_init : " << Phi_init << std::endl;
-    std::cout << "Dphi     : " << Dphi << std::endl;
     std::cout << "---------------------" << std::endl << std::endl;
 
     PhysPeach::Jamming jam;
