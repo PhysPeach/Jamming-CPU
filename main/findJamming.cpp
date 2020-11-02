@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
     memcpy(xmem, jam.p.x, D*Np*sizeof(double));
     Pnow = P(&jam.p, L(&jam), &jam.lists);
 
-    std::cout << "    Squeeze from phi = " << jam.phi << " by dphi = " << 1.0e-6 << std::endl;
+    std::cout << "    Expand from phi = " << jam.phi << " by dphi = " << 1.0e-6 << std::endl;
     std::cout << "    phi, E, P, loop:" << std::endl;
     while (Pnow > 1.0e-8){
         phimem = jam.phi;

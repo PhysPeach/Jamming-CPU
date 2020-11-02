@@ -223,6 +223,7 @@ namespace PhysPeach{
                 updateCells(&cells, L, p.x);
                 updateLists(&lists, &cells, L, p.x);
             }
+            std::cout << i << " " << K(&p) + U(&p, L, &lists) << std::endl;
         }
         E2 = K(&p) + U(&p, L, &lists);
         assert(-0.005 < E1 - E2 && E1 - E2 < 0.005);

@@ -4,6 +4,9 @@ test: testsrc/test.o cpp/MT.o cpp/conf.o testcpp/conf_test.o cpp/particles.o tes
 findJamming: main/findJamming.o cpp/MT.o cpp/conf.o cpp/particles.o cpp/cells.o cpp/jamming.o
 	g++ -o $@ $^
 
+p-phiJamming: main/p-phiJamming.o cpp/MT.o cpp/conf.o cpp/particles.o cpp/cells.o cpp/jamming.o
+	g++ -o $@ $^
+
 squeezeJamming: main/squeezeJamming.o cpp/MT.o cpp/conf.o cpp/particles.o cpp/cells.o cpp/jamming.o
 	g++ -o $@ $^
 
